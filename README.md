@@ -1,3 +1,45 @@
+This is the repository we used for week 5 challenge at 10 academy. We needed to predict the sales of a pharmaceutical company and serve it on a website. We used flask
+to serve the web application.
+
+Since We used a template 
+
+# The only files worked on are 
+
+# 1) app/bases/routes.py
+# 2) home/templete/index.html
+# 3) home/template/icon.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # [Flask Dashboard - Argon Design](https://appseed.us/admin-dashboards/flask-boilerplate-dashboard-argon)
 
 > **Open-Source Admin Dashboard** coded in **Flask Framework** by **AppSeed** [Web App Generator](https://appseed.us/app-generator) - Features:
