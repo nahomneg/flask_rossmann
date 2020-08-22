@@ -1,0 +1,915 @@
+{% extends "base_site.html" %}
+
+{% block title %} Dashboard {% endblock title %}
+
+{% block stylesheets %}
+  {{ super() }}
+{% endblock stylesheets %}
+
+{% block content %}
+
+  {% include "site_template/navigation.html" %}
+
+  {% include "site_template/top-stats.html" %}
+<style>
+  body {
+    font-family: Arial;
+  }
+
+  /* Style the tab */
+  .tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+
+  /* Style the buttons inside the tab */
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #ddd;
+  }
+
+  /* Create an active/current tablink class */
+  .tab button.active {
+    background-color: #ccc;
+  }
+
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+</style>
+<script>
+  function openCity(evt, cityName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+</script>
+<script src="{{ url_for('static', filename='assets/js/plugins/chart.js/dist/Chart.min.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/chart.js/dist/Chart.extension.js') }}"></script>
+<script src="{{ url_for('static', filename='assets/js/plugins/jquery/dist/jquery.min.js') }}"></script>
+
+  <div class="container-fluid mt--7">
+    <div class="row">
+      <div class="col-xl-8 mb-5 mb-xl-0">
+        <div class="card g-gradient-default shado">
+          <div class="tab">
+            <button id="default" class="tablinks" onclick="openCity(event, 'London')">Chart.JS</button>
+            <button class="tablinks" onclick="openCity(event, 'Paris')">MatPlotLib</button>
+
+          </div>
+
+          <div id="London" class="tabcontent">
+            <h3 >Chart.JS</h3>
+            <!-- Chart -->
+            <div class="chart">
+              <!-- Chart wrapper -->
+              <canvas id="chart-sales" class="chart-canvas"></canvas>
+            </div>
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+
+
+
+
+              </div>
+            </div>
+          </div>
+
+          <div id="Paris" class="tabcontent">
+            <h3>Mat Plot Library</h3>
+
+            <img src="plot.png?type=all">
+
+
+
+          </div>
+
+
+          <div class="card-body">
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4">
+        <div class="card shadow">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
+                <h2 class="mb-0">Total orders</h2>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Chart -->
+            <div class="chart">
+              <canvas id="chart-orders" class="chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-xl-8 mb-5 mb-xl-0">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <div class="row align-items-center">
+              <div class="col">
+                <h3 class="mb-0">Page visits</h3>
+              </div>
+              <div class="col text-right">
+                <a href="#!" class="btn btn-sm btn-primary">See all</a>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <!-- Projects table -->
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Sales</th>
+
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+<!--      <div class="col-xl-4">-->
+<!--        <div class="card shadow">-->
+<!--          <div class="card-header border-0">-->
+<!--            <div class="row align-items-center">-->
+<!--              <div class="col">-->
+<!--                <h3 class="mb-0">Social traffic</h3>-->
+<!--              </div>-->
+<!--              <div class="col text-right">-->
+<!--                <a href="#!" class="btn btn-sm btn-primary">See all</a>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="table-responsive">-->
+<!--            &lt;!&ndash; Projects table &ndash;&gt;-->
+<!--            <table class="table align-items-center table-flush">-->
+<!--              <thead class="thead-light">-->
+<!--                <tr>-->
+<!--                  <th scope="col">Referral</th>-->
+<!--                  <th scope="col">Visitors</th>-->
+<!--                  <th scope="col"></th>-->
+<!--                </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--                <tr>-->
+<!--                  <th scope="row">-->
+<!--                    Facebook-->
+<!--                  </th>-->
+<!--                  <td>-->
+<!--                    1,480-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <div class="d-flex align-items-center">-->
+<!--                      <span class="mr-2">60%</span>-->
+<!--                      <div>-->
+<!--                        <div class="progress">-->
+<!--                          <div class="progress-bar bg-gradient-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                  <th scope="row">-->
+<!--                    Facebook-->
+<!--                  </th>-->
+<!--                  <td>-->
+<!--                    5,480-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <div class="d-flex align-items-center">-->
+<!--                      <span class="mr-2">70%</span>-->
+<!--                      <div>-->
+<!--                        <div class="progress">-->
+<!--                          <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                  <th scope="row">-->
+<!--                    Google-->
+<!--                  </th>-->
+<!--                  <td>-->
+<!--                    4,807-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <div class="d-flex align-items-center">-->
+<!--                      <span class="mr-2">80%</span>-->
+<!--                      <div>-->
+<!--                        <div class="progress">-->
+<!--                          <div class="progress-bar bg-gradient-primary" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                  <th scope="row">-->
+<!--                    Instagram-->
+<!--                  </th>-->
+<!--                  <td>-->
+<!--                    3,678-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <div class="d-flex align-items-center">-->
+<!--                      <span class="mr-2">75%</span>-->
+<!--                      <div>-->
+<!--                        <div class="progress">-->
+<!--                          <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%;"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                  <th scope="row">-->
+<!--                    twitter-->
+<!--                  </th>-->
+<!--                  <td>-->
+<!--                    2,645-->
+<!--                  </td>-->
+<!--                  <td>-->
+<!--                    <div class="d-flex align-items-center">-->
+<!--                      <span class="mr-2">30%</span>-->
+<!--                      <div>-->
+<!--                        <div class="progress">-->
+<!--                          <div class="progress-bar bg-gradient-warning" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;"></div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </td>-->
+<!--                </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+    </div>
+
+
+    {% include "site_template/footer.html" %}
+
+  </div>
+<script>
+
+
+
+  document.getElementById('default').click();
+  var Charts = (function() {
+
+    // Variable
+
+    var $toggle = $('[data-toggle="chart"]');
+    var mode = 'light';//(themeMode) ? themeMode : 'light';
+    var fonts = {
+      base: 'Open Sans'
+    }
+
+    // Colors
+    var colors = {
+      gray: {
+        100: '#f6f9fc',
+        200: '#e9ecef',
+        300: '#dee2e6',
+        400: '#ced4da',
+        500: '#adb5bd',
+        600: '#8898aa',
+        700: '#525f7f',
+        800: '#32325d',
+        900: '#212529'
+      },
+      theme: {
+        'default': '#172b4d',
+        'primary': '#5e72e4',
+        'secondary': '#f4f5f7',
+        'info': '#11cdef',
+        'success': '#2dce89',
+        'danger': '#f5365c',
+        'warning': '#fb6340'
+      },
+      black: '#12263F',
+      white: '#FFFFFF',
+      transparent: 'transparent',
+    };
+
+
+    // Methods
+
+    // Chart.js global options
+    function chartOptions() {
+
+      // Options
+      var options = {
+        defaults: {
+          global: {
+            responsive: true,
+            maintainAspectRatio: false,
+            defaultColor: (mode == 'light') ? colors.gray[700] : colors.gray[600],
+            defaultFontColor: (mode == 'light') ? colors.gray[700] : colors.gray[600],
+            defaultFontFamily: fonts.base,
+            defaultFontSize: 13,
+            layout: {
+              padding: 0
+            },
+            legend: {
+              display: false,
+              position: 'bottom',
+              labels: {
+                usePointStyle: true,
+                padding: 16
+              }
+            },
+            elements: {
+              point: {
+                radius: 0,
+                backgroundColor: colors.theme['primary']
+              },
+              line: {
+                tension: .4,
+                borderWidth: 4,
+                borderColor: colors.theme['primary'],
+                backgroundColor: colors.transparent,
+                borderCapStyle: 'rounded'
+              },
+              rectangle: {
+                backgroundColor: colors.theme['warning']
+              },
+              arc: {
+                backgroundColor: colors.theme['primary'],
+                borderColor: (mode == 'light') ? colors.gray[800] : colors.white,
+                borderWidth: 4
+              }
+            },
+            tooltips: {
+              enabled: false,
+              mode: 'index',
+              intersect: false,
+              custom: function(model) {
+
+                // Get tooltip
+                var $tooltip = $('#chart-tooltip');
+
+                // Create tooltip on first render
+                if (!$tooltip.length) {
+                  $tooltip = $('<div id="chart-tooltip" class="popover bs-popover-top" role="tooltip"></div>');
+
+                  // Append to body
+                  $('body').append($tooltip);
+                }
+
+                // Hide if no tooltip
+                if (model.opacity === 0) {
+                  $tooltip.css('display', 'none');
+                  return;
+                }
+
+                function getBody(bodyItem) {
+                  return bodyItem.lines;
+                }
+
+                // Fill with content
+                if (model.body) {
+                  var titleLines = model.title || [];
+                  var bodyLines = model.body.map(getBody);
+                  var html = '';
+
+                  // Add arrow
+                  html += '<div class="arrow"></div>';
+
+                  // Add header
+                  titleLines.forEach(function(title) {
+                    html += '<h3 class="popover-header text-center">' + title + '</h3>';
+                  });
+
+                  // Add body
+                  bodyLines.forEach(function(body, i) {
+                    var colors = model.labelColors[i];
+                    var styles = 'background-color: ' + colors.backgroundColor;
+                    var indicator = '<span class="badge badge-dot"><i class="bg-primary"></i></span>';
+                    var align = (bodyLines.length > 1) ? 'justify-content-left' : 'justify-content-center';
+                    html += '<div class="popover-body d-flex align-items-center ' + align + '">' + indicator + body + '</div>';
+                  });
+
+                  $tooltip.html(html);
+                }
+
+                // Get tooltip position
+                var $canvas = $(this._chart.canvas);
+
+                var canvasWidth = $canvas.outerWidth();
+                var canvasHeight = $canvas.outerHeight();
+
+                var canvasTop = $canvas.offset().top;
+                var canvasLeft = $canvas.offset().left;
+
+                var tooltipWidth = $tooltip.outerWidth();
+                var tooltipHeight = $tooltip.outerHeight();
+
+                var top = canvasTop + model.caretY - tooltipHeight - 16;
+                var left = canvasLeft + model.caretX - tooltipWidth / 2;
+
+                // Display tooltip
+                $tooltip.css({
+                  'top': top + 'px',
+                  'left': left + 'px',
+                  'display': 'block',
+                  'z-index': '100'
+                });
+
+              },
+              callbacks: {
+                label: function(item, data) {
+                  var label = data.datasets[item.datasetIndex].label || '';
+                  var yLabel = item.yLabel;
+                  var content = '';
+
+                  if (data.datasets.length > 1) {
+                    content += '<span class="badge badge-primary mr-auto">' + label + '</span>';
+                  }
+
+                  content += '<span class="popover-body-value">' + yLabel + '</span>' ;
+                  return content;
+                }
+              }
+            }
+          },
+          doughnut: {
+            cutoutPercentage: 83,
+            tooltips: {
+              callbacks: {
+                title: function(item, data) {
+                  var title = data.labels[item[0].index];
+                  return title;
+                },
+                label: function(item, data) {
+                  var value = data.datasets[0].data[item.index];
+                  var content = '';
+
+                  content += '<span class="popover-body-value">' + value + '</span>';
+                  return content;
+                }
+              }
+            },
+            legendCallback: function(chart) {
+              var data = chart.data;
+              var content = '';
+
+              data.labels.forEach(function(label, index) {
+                var bgColor = data.datasets[0].backgroundColor[index];
+
+                content += '<span class="chart-legend-item">';
+                content += '<i class="chart-legend-indicator" style="background-color: ' + bgColor + '"></i>';
+                content += label;
+                content += '</span>';
+              });
+
+              return content;
+            }
+          }
+        }
+      }
+
+      // yAxes
+      Chart.scaleService.updateScaleDefaults('linear', {
+        gridLines: {
+          borderDash: [2],
+          borderDashOffset: [2],
+          color: (mode == 'dark') ? colors.gray[900] : colors.gray[300],
+          drawBorder: false,
+          drawTicks: false,
+          lineWidth: 0,
+          zeroLineWidth: 0,
+          zeroLineColor: (mode == 'dark') ? colors.gray[900] : colors.gray[300],
+          zeroLineBorderDash: [2],
+          zeroLineBorderDashOffset: [2]
+        },
+        ticks: {
+          beginAtZero: true,
+          padding: 10,
+          callback: function(value) {
+            if (!(value % 10)) {
+              return value
+            }
+          }
+        }
+      });
+
+      // xAxes
+      Chart.scaleService.updateScaleDefaults('category', {
+        gridLines: {
+          drawBorder: false,
+          drawOnChartArea: false,
+          drawTicks: false
+        },
+        ticks: {
+          padding: 20
+        },
+        maxBarThickness: 10
+      });
+
+      return options;
+
+    }
+
+    // Parse global options
+    function parseOptions(parent, options) {
+      for (var item in options) {
+        if (typeof options[item] !== 'object') {
+          parent[item] = options[item];
+        } else {
+          parseOptions(parent[item], options[item]);
+        }
+      }
+    }
+
+    // Push options
+    function pushOptions(parent, options) {
+      for (var item in options) {
+        if (Array.isArray(options[item])) {
+          options[item].forEach(function(data) {
+            parent[item].push(data);
+          });
+        } else {
+          pushOptions(parent[item], options[item]);
+        }
+      }
+    }
+
+    // Pop options
+    function popOptions(parent, options) {
+      for (var item in options) {
+        if (Array.isArray(options[item])) {
+          options[item].forEach(function(data) {
+            parent[item].pop();
+          });
+        } else {
+          popOptions(parent[item], options[item]);
+        }
+      }
+    }
+
+    // Toggle options
+    function toggleOptions(elem) {
+      var options = elem.data('add');
+      var $target = $(elem.data('target'));
+      var $chart = $target.data('chart');
+
+      if (elem.is(':checked')) {
+
+        // Add options
+        pushOptions($chart, options);
+
+        // Update chart
+        $chart.update();
+      } else {
+
+        // Remove options
+        popOptions($chart, options);
+
+        // Update chart
+        $chart.update();
+      }
+    }
+
+    // Update options
+    function updateOptions(elem) {
+      var options = elem.data('update');
+      var $target = $(elem.data('target'));
+      var $chart = $target.data('chart');
+
+      // Parse options
+      parseOptions($chart, options);
+
+      // Toggle ticks
+      toggleTicks(elem, $chart);
+
+      // Update chart
+      $chart.update();
+    }
+
+    // Toggle ticks
+    function toggleTicks(elem, $chart) {
+
+      if (elem.data('prefix') !== undefined || elem.data('prefix') !== undefined) {
+        var prefix = elem.data('prefix') ? elem.data('prefix') : '';
+        var suffix = elem.data('suffix') ? elem.data('suffix') : '';
+
+        // Update ticks
+        $chart.options.scales.yAxes[0].ticks.callback = function(value) {
+          if (!(value % 10)) {
+            return prefix + value + suffix;
+          }
+        }
+
+        // Update tooltips
+        $chart.options.tooltips.callbacks.label = function(item, data) {
+          var label = data.datasets[item.datasetIndex].label || '';
+          var yLabel = item.yLabel;
+          var content = '';
+
+          if (data.datasets.length > 1) {
+            content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+          }
+
+          content += '<span class="popover-body-value">' + prefix + yLabel + suffix + '</span>';
+          return content;
+        }
+
+      }
+    }
+
+
+    // Events
+
+    // Parse global options
+    if (window.Chart) {
+      parseOptions(Chart, chartOptions());
+    }
+
+    // Toggle options
+    $toggle.on({
+      'change': function() {
+        var $this = $(this);
+
+        if ($this.is('[data-add]')) {
+          toggleOptions($this);
+        }
+      },
+      'click': function() {
+        var $this = $(this);
+
+        if ($this.is('[data-update]')) {
+          updateOptions($this);
+        }
+      }
+    });
+
+
+    // Return
+
+    return {
+      colors: colors,
+      fonts: fonts,
+      mode: mode
+    };
+
+  })();
+  fetch("/allstores", {
+    method: 'GET',
+
+  }).then(function(response) {
+    return response.json();
+  }).then(function(myJson) {
+    if(myJson !== null)
+      var OrdersChart = (function() {
+
+        //
+        // Variables
+        //
+        values=[]
+        labels=[]
+        for(var key in myJson) {
+          labels.push(key);
+          values.push(myJson[key]);
+
+
+          // do something with "key" and "value" variables
+        }
+        var $chart = $('#chart-orders');
+        var $ordersSelect = $('[name="ordersSelect"]');
+
+
+        //
+        // Methods
+        //
+
+        // Init chart
+        function initChart($chart) {
+
+          // Create chart
+          var ordersChart = new Chart($chart, {
+            type: 'bar',
+            options: {
+              scales: {
+                yAxes: [{
+                  gridLines: {
+                    lineWidth: 1,
+                    color: '#dfe2e6',
+                    zeroLineColor: '#dfe2e6'
+                  },
+                  ticks: {
+                    callback: function(value) {
+                      if (!(value % 10)) {
+                        //return '$' + value + 'k'
+                        return value
+                      }
+                    }
+                  }
+                }]
+              },
+              tooltips: {
+                callbacks: {
+                  label: function(item, data) {
+                    var label = data.datasets[item.datasetIndex].label || '';
+                    var yLabel = item.yLabel;
+                    var content = '';
+
+                    if (data.datasets.length > 1) {
+                      content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+                    }
+
+                    content += '<span class="popover-body-value">' + yLabel + '</span>';
+
+                    return content;
+                  }
+                }
+              }
+            },
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Sales',
+                data: values
+              }]
+            }
+          });
+
+          // Save to jQuery object
+          $chart.data('chart', ordersChart);
+        }
+
+
+        // Init chart
+        if ($chart.length) {
+          initChart($chart);
+        }
+
+      })();
+    console.log("populated data."+myJson)
+
+  });
+
+
+  function populateGraph(data_db) {
+    console.log(data_db);
+
+    values=[]
+    labels=[]
+    for(var key in data_db) {
+      labels.push(key);
+      values.push(data_db[key]);
+
+
+      // do something with "key" and "value" variables
+    }
+    var ar = [labels,values], table = document.querySelector('table tbody');
+
+
+    var r = ar[0].map(function(col, i) {
+      return ar.map(function(row) {
+        return row[i];
+      });
+    });
+    //Add data to table
+    r.forEach(function(e) {
+      table.innerHTML += '<tr><td>' + e[0] + '</td><td>' + e[1] + '</td></tr>'
+    })
+
+
+
+    var $chart = $('#chart-sales');
+
+    // Methods
+
+    function init($chart) {
+
+      var salesChart = new Chart($chart, {
+        type: 'line',
+        options: {
+          scales: {
+            yAxes: [{
+              gridLines: {
+                lineWidth: 1,
+                color: Charts.colors.gray[900],
+                zeroLineColor: Charts.colors.gray[900]
+              },
+              ticks: {
+                callback: function(value) {
+                  if (!(value % 10)) {
+                    return '$' + value + 'k';
+                  }
+                }
+              }
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function(item, data) {
+                var label = data.datasets[item.datasetIndex].label || '';
+                var yLabel = item.yLabel;
+                var content = '';
+
+                if (data.datasets.length > 1) {
+                  content += '<span class="popover-body-label mr-auto">' + label + '</span>';
+                }
+
+                content += '<span class="popover-body-value">$' + yLabel + 'k</span>';
+                return content;
+              }
+            }
+          }
+        },
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Performance',
+            data: values
+          }]
+        }
+      });
+
+      // Save to jQuery object
+
+      $chart.data('chart', salesChart);
+
+    };
+
+
+    // Events
+
+    if ($chart.length) {
+      init($chart);
+    }
+
+  };
+  fetch("/allstores", {
+    method: 'GET',
+
+  }).then(function(response) {
+    return response.json();
+  }).then(function(myJson) {
+    if(myJson !== null)
+      populateGraph(myJson);
+    console.log("populated data."+myJson)
+
+  });
+  // document.getElementById("form").addEventListener("submit", function(event) {
+
+  // get for inputs to send to server
+  // let name = document.getElementById("form-name").value;
+
+  // event.defaultPrevented();
+  // give endpoint, and create a request to send
+
+
+  // <!--});
+
+</script>
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super()}}
+{% endblock javascripts %}
